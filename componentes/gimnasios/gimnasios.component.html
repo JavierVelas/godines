@@ -1,0 +1,69 @@
+<div class="container-xl gimnasios-container">
+    <h2 id="titulo">Lista de Gimnasios</h2>
+    <div *ngIf="error" class="error-message">{{ error }}</div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Ubicación</th>
+          <th>Teléfono</th>
+          <th>Imagen</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let gimnasio of gimnasios; let i = index">
+          <td>{{ gimnasio.nombre_gimnasio }}</td>
+          <td>{{ gimnasio.ubicacion }}</td>
+          <td>{{ gimnasio.telefono }}</td>
+          <td>
+            <img [src]="gimnasio.imagen_url" alt="{{ gimnasio.nombre_gimnasio }}" class="img-fluid">
+          </td>
+          <td>
+            <button (click)="editGimnasio(gimnasio)" class="btn btn-warning">Editar</button>
+            <button (click)="deleteGimnasio(gimnasio.id_gimnasio)" class="btn btn-danger">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <div *ngIf="!editingGimnasio">
+      <h3>Crear Gimnasio</h3>
+      <form (ngSubmit)="createGimnasio()" class="gimnasio-form">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" [(ngModel)]="newGimnasio.nombre_gimnasio" name="nombre" class="form-control" required><br>
+        
+        <label for="ubicacion">Ubicación:</label>
+        <input type="text" id="ubicacion" [(ngModel)]="newGimnasio.ubicacion" name="ubicacion" class="form-control" required><br>
+        
+        <label for="telefono">Teléfono:</label>
+        <input type="text" id="telefono" [(ngModel)]="newGimnasio.telefono" name="telefono" class="form-control"><br>
+        
+        <label for="imagen_url">URL de la Imagen:</label>
+        <input type="text" id="imagen_url" [(ngModel)]="newGimnasio.imagen_url" name="imagen_url" class="form-control" required><br>
+        
+        <button type="submit" class="btn btn-success">Crear Gimnasio</button>
+      </form>
+    </div>
+  
+    <div *ngIf="editingGimnasio">
+      <h3>Editar Gimnasio</h3>
+      <form (ngSubmit)="updateGimnasio(editingGimnasio.id_gimnasio)" class="gimnasio-form">
+        <label for="editNombre">Nombre:</label>
+        <input type="text" id="editNombre" [(ngModel)]="editingGimnasio.nombre_gimnasio" name="editNombre" class="form-control" required><br>
+        
+        <label for="editUbicacion">Ubicación:</label>
+        <input type="text" id="editUbicacion" [(ngModel)]="editingGimnasio.ubicacion" name="editUbicacion" class="form-control" required><br>
+        
+        <label for="editTelefono">Teléfono:</label>
+        <input type="text" id="editTelefono" [(ngModel)]="editingGimnasio.telefono" name="editTelefono" class="form-control"><br>
+        
+        <label for="editImagenUrl">URL de la Imagen:</label>
+        <input type="text" id="editImagenUrl" [(ngModel)]="editingGimnasio.imagen_url" name="editImagenUrl" class="form-control" required><br>
+        
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        <button type="button" (click)="cancelEdit()" class="btn btn-secondary">Cancelar</button>
+      </form>
+    </div>
+  </div>
+  

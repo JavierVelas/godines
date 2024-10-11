@@ -1,0 +1,87 @@
+<div class="container-xl rutina-container">
+  <h2>Lista de Rutinas</h2>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+  <input type="text" [(ngModel)]="filter" class="form-control mb-3" placeholder="Buscar rutinas...">
+
+  <table class="table rutina-table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Enlace</th>
+        <th scope="col">Descripción</th>
+        <th scope="col">Imagen</th>
+        <th scope="col">Fecha de creación</th>
+        <th scope="col">Edición</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let rutina of rutinas | filter:filter:['nombre_rutina', 'enlace']">
+        <td>{{ rutina.nombre_rutina }}</td>
+        <td><a [href]="rutina.enlace" target="_blank">Ver Rutina</a></td>
+        <td>{{ rutina.descripcion }}</td>
+        <td class="img-cell">
+          <img [src]="rutina.imagen_url" alt="{{ rutina.nombre_rutina }}" class="img-fluid">
+        </td>
+        <td>{{ rutina.fecha_creacion | date:'short' }}</td>
+        <td>
+          <button (click)="editRutina(rutina)" class="btn btn-warning btn-action edit">Editar</button>
+          <button (click)="deleteRutina(rutina.id_rutina)" class="btn btn-danger btn-action delete">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!editingRutina">
+    <h3>Crear Rutina</h3>
+    <form (ngSubmit)="createRutina()" class="rutina-form">
+      <div class="form-group">
+        <label for="nombre_rutina">Nombre:</label>
+        <input type="text" id="nombre_rutina" [(ngModel)]="newRutina.nombre_rutina" name="nombre_rutina" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="enlace">Enlace:</label>
+        <input type="url" id="enlace" [(ngModel)]="newRutina.enlace" name="enlace" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="descripcion">Descripción:</label>
+        <input type="text" id="descripcion" [(ngModel)]="newRutina.descripcion" name="descripcion" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="imagen_url">URL de la Imagen:</label>
+        <input type="text" id="imagen_url" [(ngModel)]="newRutina.imagen_url" name="imagen_url" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="fecha_creacion">Fecha de Creación:</label>
+        <input type="date" id="fecha_creacion" [(ngModel)]="newRutina.fecha_creacion" name="fecha_creacion" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-success">Crear Rutina</button>
+    </form>
+  </div>
+
+  <div *ngIf="editingRutina">
+    <h3>Editar Rutina</h3>
+    <form (ngSubmit)="updateRutina(editingRutina.id_rutina)" class="rutina-form">
+      <div class="form-group">
+        <label for="nombre_rutina-edit">Nombre:</label>
+        <input type="text" id="nombre_rutina-edit" [(ngModel)]="editingRutina.nombre_rutina" name="nombre_rutina-edit" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="enlace-edit">Enlace:</label>
+        <input type="url" id="enlace-edit" [(ngModel)]="editingRutina.enlace" name="enlace-edit" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="descripcion-edit">Descripción:</label>
+        <input type="text" id="descripcion-edit" [(ngModel)]="editingRutina.descripcion" name="descripcion-edit" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="imagen_url-edit">URL de la Imagen:</label>
+        <input type="text" id="imagen_url-edit" [(ngModel)]="editingRutina.imagen_url" name="imagen_url-edit" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="fecha_creacion-edit">Fecha de Creación:</label>
+        <input type="date" id="fecha_creacion-edit" [(ngModel)]="editingRutina.fecha_creacion" name="fecha_creacion-edit" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    </form>
+  </div>
+</div>
